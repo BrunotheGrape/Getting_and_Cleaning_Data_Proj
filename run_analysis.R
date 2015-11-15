@@ -39,11 +39,13 @@ prod <- rbind(tsbjf, trnsbjf)
         #create tidy dataframe
 nms <- c(id, anm, varNames)
 tidy.data <- data.frame()
+tidy.m <- data.frame()
 m <- data.frame()
 col1 <- data.frame()
-setnames(col1, test_sbj_id)
 sbjid <- data.frame()
 sbj <- data.frame()
+actid <- data.frame()
+act <- data.frame()
 
         # subsetting data and extracting column means
 
@@ -53,24 +55,23 @@ for (l in 1:6) {
 sbst2 <- filter(sbst1, activity_no == l) # subset by activity
 sbcol1 <- select(sbst2, -(test_sbj_id:activity_name)) #subset for activity columns
 m <- colMeans(sbcol1, na.rm = TRUE)
-tidy.data <- rbind(tidy.data, m)
+m <- t(m)
+m <- as.data.frame(m)
+tidy.m <- rbind(tidy.m, m)
 sbj <- i
-sbjid <- rbind(sbjid, sbj )               }
+sbjid <- rbind(sbjid, sbj )
+act <- l
+actid <- rbind(actid, act)
+
 }
-#m <- as.data.frame(m)
-
-#m <- t(m)
-#sbcol2 <- sbst2[1 , 1:4]
-#col1 <- cbind(sbcol2, m)
-#col1 <- unique(col1)
-#tidy.data <- rbind(tidy.data, col1)
 }
-#setnames(tidy.data, nms)
-#tidy.data <- merge(tidy.data, col1, all = TRUE)
 
-# sapply(1:30, function(prod) filter(prod, test_sbj_id == ind)
-                #rslt2 <- colMeans(select(rslt1, -(test_sbj_id:activity_name)))
+tidy.data <- tidy.m
+setnames(sbjid, "test_sbj_id")
+setnames(actid, "activity_no")
+setnames(tidy.data, varNames)
+tdactcoltst <- merge(actid, actNames, by.x = "activity_no", by.y = "activity_no" )
+tidy.data <- cbind(tdactcoltst, tidy.data)
+tidy.data <- cbind(sbjid, tidy.data)
 
-# x <- filter(prod, test_sbj_id == 3)
 
-for (i in 1:30) {print(i)}
