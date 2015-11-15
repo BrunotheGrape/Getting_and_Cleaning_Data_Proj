@@ -22,11 +22,11 @@ tsbjt <- cbind(tsbjt, "test") #adds data for tst_or_trn to test subject id colum
 trnsbjt <- cbind(trnsbjt, "train")
 setnames(tsbjt, id)
 setnames(trnsbjt, id)
+
 tsbja <- cbind(tsbjt, actcoltst) # combines test subject id with activity names 
 trnsbja <- cbind(trnsbjt, actcoltrn)
-        #naming activity variable columns
 
-varNames <- varNames$V2
+varNames <- varNames$V2 #naming activity variable columns
 setnames(tsbjx, varNames)
 setnames(trnsbjx, varNames)
 
@@ -36,3 +36,41 @@ tsbjf <- cbind(tsbja, tsbjx)
 trnsbjf <- cbind(trnsbja, trnsbjx)
 prod <- rbind(tsbjf, trnsbjf)
 
+        #create tidy dataframe
+nms <- c(id, anm, varNames)
+tidy.data <- data.frame()
+m <- data.frame()
+col1 <- data.frame()
+setnames(col1, test_sbj_id)
+sbjid <- data.frame()
+sbj <- data.frame()
+
+        # subsetting data and extracting column means
+
+for (i in 1:30) {
+sbst1 <- filter(prod, test_sbj_id == i) # subset by test subject
+for (l in 1:6) {
+sbst2 <- filter(sbst1, activity_no == l) # subset by activity
+sbcol1 <- select(sbst2, -(test_sbj_id:activity_name)) #subset for activity columns
+m <- colMeans(sbcol1, na.rm = TRUE)
+tidy.data <- rbind(tidy.data, m)
+sbj <- i
+sbjid <- rbind(sbjid, sbj )               }
+}
+#m <- as.data.frame(m)
+
+#m <- t(m)
+#sbcol2 <- sbst2[1 , 1:4]
+#col1 <- cbind(sbcol2, m)
+#col1 <- unique(col1)
+#tidy.data <- rbind(tidy.data, col1)
+}
+#setnames(tidy.data, nms)
+#tidy.data <- merge(tidy.data, col1, all = TRUE)
+
+# sapply(1:30, function(prod) filter(prod, test_sbj_id == ind)
+                #rslt2 <- colMeans(select(rslt1, -(test_sbj_id:activity_name)))
+
+# x <- filter(prod, test_sbj_id == 3)
+
+for (i in 1:30) {print(i)}
