@@ -81,5 +81,6 @@ setnames(tidy.data, varNames)
 tdactcoltst <- merge(actid, actNames, by.x = "activity_no", by.y = "activity_no" )
 tidy.data <- cbind(tdactcoltst, tidy.data)
 tidy.data <- cbind(sbjid, tidy.data)
-
+# create text file
+write.table(tidy.data, file = "tidy.data.txt", col.names = FALSE)
 
